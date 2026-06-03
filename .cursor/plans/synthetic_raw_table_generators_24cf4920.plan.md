@@ -4,22 +4,22 @@ overview: Add dimension-table generators (members, pharmacies, drugs, plans, plu
 todos:
   - id: shared-module
     content: Create scripts/synthetic/constants.py and common.py with counts, drug catalog, logging, CSV helpers, and fixed seed
-    status: pending
+    status: completed
   - id: dimension-generators
     content: Add generate_synthetic_{plans,drugs,pharmacies,members,providers,formulary}.py scripts writing to data/raw/
-    status: pending
+    status: completed
   - id: refactor-claims
     content: Refactor generate_synthetic_claims.py to read dimension CSVs, enforce FK/NDC/eligibility/financial rules
-    status: pending
+    status: completed
   - id: refactor-loader
     content: Refactor load_raw_to_snowflake.py to table registry, DDL per table, truncate-before-load, load all 7 CSVs
-    status: pending
+    status: completed
   - id: update-pipeline
     content: Update run_pipeline.sh to run all generators in dependency order then load
-    status: pending
+    status: completed
   - id: verify-integrity
     content: Run pipeline and validate row counts + orphan/FK SQL checks in Snowflake
-    status: pending
+    status: completed
 isProject: false
 ---
 
