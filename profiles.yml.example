@@ -1,0 +1,13 @@
+pharmacy_benefits:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: YOUR_ACCOUNT_IDENTIFIER
+      user: YOUR_USERNAME
+      password: YOUR_PASSWORD
+      role: DBT_DEV_ROLE
+      warehouse: DBT_DEV_WH
+      database: PHARMACY_BENEFITS_DEV
+      schema: DBT_YOURNAME
+      threads: 4

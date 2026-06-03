@@ -1,2 +1,8 @@
 .venv/
 dbt_internal_packages/
+dbt_packages/
+logs/
+
+# secrets
+.env
+profiles.yml
