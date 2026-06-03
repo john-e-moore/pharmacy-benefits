@@ -1,0 +1,84 @@
+version: 2
+
+sources:
+  - name: claims
+    database: pharmacy_benefits_raw
+    tables:
+      - name: raw_claims
+        columns:
+          - name: claim_id
+            data_type: varchar
+            description: Unique identifier for each claim.
+            data_tests:
+              - unique
+              - not_null
+          - name: member_id
+            data_type: number
+            description: Foreign key referencing the member associated with the claim.
+            data_tests:
+              - not_null
+          - name: drug_id
+            data_type: number
+            description: Foreign key referencing the prescribed drug.
+            data_tests:
+              - not_null
+          - name: pharmacy_id
+            data_type: number
+            description: Foreign key referencing the dispensing pharmacy.
+            data_tests:
+              - not_null
+          - name: plan_id
+            data_type: number
+            description: Foreign key referencing the member's insurance plan.
+            data_tests:
+              - not_null
+          - name: ndc_code
+            data_type: varchar
+            description: National Drug Code (NDC) representing the dispensed medication.
+            data_tests:
+              - not_null
+          - name: claim_status
+            data_type: varchar
+            description: Status of the claim (e.g., 'PAID', 'REJECTED', etc).
+            data_tests:
+              - not_null
+          - name: fill_date
+            data_type: date
+            description: Date the prescription was filled.
+            data_tests:
+              - not_null
+          - name: days_supply
+            data_type: number
+            description: Number of days the dispensed quantity is expected to last.
+            data_tests:
+              - not_null
+          - name: quantity
+            data_type: number
+            description: Number of units dispensed for the claim.
+            data_tests:
+              - not_null
+          - name: ingredient_cost
+            data_type: number
+            description: Cost of the drug ingredient for the claim.
+            data_tests:
+              - not_null
+          - name: dispensing_fee
+            data_type: number
+            description: Fee charged by the pharmacy for dispensing the medication.
+            data_tests:
+              - not_null
+          - name: member_copay
+            data_type: number
+            description: Amount paid by the member as their copay.
+            data_tests:
+              - not_null
+          - name: plan_paid
+            data_type: number
+            description: Amount paid by the insurance plan for the claim.
+            data_tests:
+              - not_null
+          - name: loaded_at
+            data_type: timestamp_tz
+            description: Timestamp when the claim record was loaded into the system.
+            data_tests:
+              - not_null
