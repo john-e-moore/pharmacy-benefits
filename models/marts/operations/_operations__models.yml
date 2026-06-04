@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: claim_status_daily
+    description: >
+      Daily claim volume and status rates by fill_date. Grain is one row per
+      fill_date, aggregated from fct_claims.
+    columns:
+      - name: fill_date
+        description: Calendar date of prescription fills for the aggregated group.
+        data_tests:
+          - unique
+          - not_null
+      - name: total_claims
+        description: Count of claims filled on this date.
+        data_tests:
+          - not_null
+      - name: paid_claims
+        description: Count of paid claims on this date.
+        data_tests:
+          - not_null
+      - name: rejected_claims
+        description: Count of rejected claims on this date.
+        data_tests:
+          - not_null
+      - name: reversed_claims
+        description: Count of reversed claims on this date.
+        data_tests:
+          - not_null
+      - name: paid_claim_rate
+        description: Ratio of paid claims to total claims for the date.
+      - name: reversal_rate
+        description: Ratio of reversed claims to total claims for the date.

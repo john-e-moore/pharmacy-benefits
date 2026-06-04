@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: claims_cost_summary
+    description: >
+      Monthly cost and volume summary by plan. Grain is one row per fill_month
+      and plan_id, aggregated from fct_claims.
+    columns:
+      - name: fill_month
+        description: First day of the calendar month for claim fill dates in the group.
+        data_tests:
+          - not_null
+      - name: plan_id
+        description: Foreign key to dim_plans for the benefit plan.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_plans')
+                field: plan_id
+      - name: plan_name
+        description: Human-readable name of the benefit plan.
+        data_tests:
+          - not_null
+      - name: plan_type
+        description: Line of business or funding type for the plan.
+        data_tests:
+          - not_null
+      - name: total_claims
+        description: Count of claims in the month and plan group.
+        data_tests:
+          - not_null
+      - name: paid_claims
+        description: Count of paid claims in the group.
+        data_tests:
+          - not_null
+      - name: rejected_claims
+        description: Count of rejected claims in the group.
+        data_tests:
+          - not_null
+      - name: reversed_claims
+        description: Count of reversed claims in the group.
+        data_tests:
+          - not_null
+      - name: total_gross_claim_cost
+        description: Sum of gross_claim_cost across claims in the group.
+        data_tests:
+          - not_null
+      - name: total_ingredient_cost
+        description: Sum of ingredient_cost across claims in the group.
+        data_tests:
+          - not_null
+      - name: total_dispensing_fee
+        description: Sum of dispensing_fee across claims in the group.
+        data_tests:
+          - not_null
+      - name: total_member_copay
+        description: Sum of member_copay across claims in the group.
+        data_tests:
+          - not_null
+      - name: total_plan_paid
+        description: Sum of plan_paid across claims in the group.
+        data_tests:
+          - not_null

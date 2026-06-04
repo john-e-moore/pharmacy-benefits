@@ -1,0 +1,246 @@
+version: 2
+
+models:
+  - name: dim_members
+    description: >
+      Conformed dimension for enrolled members. Thin publish layer on staging;
+      one row per member_id.
+    columns:
+      - name: member_id
+        description: Unique identifier for each enrolled member.
+        data_tests:
+          - unique
+          - not_null
+      - name: plan_id
+        description: Foreign key referencing the member's pharmacy benefit plan.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_plans')
+                field: plan_id
+      - name: member_status
+        description: Enrollment status of the member (e.g., active or terminated).
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['active', 'terminated', 'suspended']
+      - name: state
+        description: Two-letter state code for the member's primary residence.
+        data_tests:
+          - not_null
+      - name: eligibility_start_date
+        description: Date pharmacy benefit eligibility begins for the member.
+        data_tests:
+          - not_null
+      - name: eligibility_end_date
+        description: Date pharmacy benefit eligibility ends; null or future-dated for active members.
+      - name: loaded_at
+        description: Timestamp when the member record was loaded into the raw layer.
+        data_tests:
+          - not_null
+
+  - name: dim_drugs
+    description: >
+      Conformed dimension for formulary drug reference data. Thin publish layer
+      on staging; one row per drug_id.
+    columns:
+      - name: drug_id
+        description: Unique identifier for each drug in the formulary reference.
+        data_tests:
+          - unique
+          - not_null
+      - name: ndc_code
+        description: National Drug Code (NDC) identifying the medication product.
+        data_tests:
+          - unique
+          - not_null
+      - name: drug_name
+        description: Display name of the drug product.
+        data_tests:
+          - not_null
+      - name: therapeutic_class
+        description: Therapeutic classification used for formulary and utilization grouping.
+        data_tests:
+          - not_null
+      - name: brand_generic
+        description: Indicates whether the product is dispensed as brand or generic.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['brand', 'generic']
+      - name: loaded_at
+        description: Timestamp when the drug record was loaded into the raw layer.
+        data_tests:
+          - not_null
+
+  - name: dim_pharmacies
+    description: >
+      Conformed dimension for dispensing pharmacies. Thin publish layer on staging;
+      one row per pharmacy_id.
+    columns:
+      - name: pharmacy_id
+        description: Unique identifier for each dispensing pharmacy.
+        data_tests:
+          - unique
+          - not_null
+      - name: pharmacy_name
+        description: Legal or trade name of the pharmacy location.
+        data_tests:
+          - not_null
+      - name: ncpdp_id
+        description: National Council for Prescription Drug Programs (NCPDP) provider identifier.
+        data_tests:
+          - unique
+          - not_null
+      - name: state
+        description: Two-letter state code where the pharmacy is located.
+        data_tests:
+          - not_null
+      - name: network_status
+        description: Indicates whether the pharmacy participates in the plan network.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['in_network', 'out_of_network']
+      - name: loaded_at
+        description: Timestamp when the pharmacy record was loaded into the raw layer.
+        data_tests:
+          - not_null
+
+  - name: dim_plans
+    description: >
+      Conformed dimension for pharmacy benefit plans. Thin publish layer on staging;
+      one row per plan_id.
+    columns:
+      - name: plan_id
+        description: Unique identifier for each pharmacy benefit plan.
+        data_tests:
+          - unique
+          - not_null
+      - name: plan_name
+        description: Human-readable name of the benefit plan.
+        data_tests:
+          - not_null
+      - name: plan_type
+        description: Line of business or funding type for the plan (e.g., commercial, Medicare).
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['commercial', 'medicare', 'medicaid', 'hmo', 'ppo']
+      - name: loaded_at
+        description: Timestamp when the plan record was loaded into the raw layer.
+        data_tests:
+          - not_null
+
+  - name: fct_claims
+    description: >
+      Core claims fact table at claim grain (one row per claim_id). Built from
+      deduplicated, enriched intermediate claims with measures and dimension keys.
+    columns:
+      - name: claim_id
+        description: Unique identifier for each claim.
+        data_tests:
+          - unique
+          - not_null
+      - name: member_id
+        description: Foreign key to dim_members.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_members')
+                field: member_id
+      - name: drug_id
+        description: Foreign key to dim_drugs.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_drugs')
+                field: drug_id
+      - name: pharmacy_id
+        description: Foreign key to dim_pharmacies.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_pharmacies')
+                field: pharmacy_id
+      - name: plan_id
+        description: Foreign key to dim_plans.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_plans')
+                field: plan_id
+      - name: ndc_code
+        description: National Drug Code (NDC) representing the dispensed medication.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_drugs')
+                field: ndc_code
+      - name: claim_status
+        description: Status of the claim (e.g., paid, rejected, reversed).
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['paid', 'rejected', 'reversed']
+      - name: fill_date
+        description: Date the prescription was filled.
+        data_tests:
+          - not_null
+      - name: days_supply
+        description: Number of days the dispensed quantity is expected to last.
+        data_tests:
+          - not_null
+      - name: quantity
+        description: Number of units dispensed for the claim.
+        data_tests:
+          - not_null
+      - name: ingredient_cost
+        description: Cost of the drug ingredient for the claim.
+        data_tests:
+          - not_null
+      - name: dispensing_fee
+        description: Fee charged by the pharmacy for dispensing the medication.
+        data_tests:
+          - not_null
+      - name: member_copay
+        description: Amount paid by the member as their copay.
+        data_tests:
+          - not_null
+      - name: plan_paid
+        description: Amount paid by the insurance plan for the claim.
+        data_tests:
+          - not_null
+      - name: allowed_amount
+        description: Total allowed amount (member_copay + plan_paid) for the claim.
+        data_tests:
+          - not_null
+      - name: gross_claim_cost
+        description: Sum of ingredient_cost and dispensing_fee for the claim.
+        data_tests:
+          - not_null
+      - name: pct_total_member_copay
+        description: >
+          Proportion of the total cost paid by the member, null if plan_paid is not positive.
+      - name: is_claim_paid
+        description: 1 if the claim status is 'paid', else 0.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 0]
+      - name: loaded_at
+        description: Timestamp when the claim record was loaded into the system.
+        data_tests:
+          - not_null

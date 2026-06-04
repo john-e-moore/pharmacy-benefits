@@ -1,0 +1,21 @@
+select
+    claim_id,
+    member_id,
+    drug_id,
+    pharmacy_id,
+    plan_id,
+    ndc_code,
+    claim_status,
+    fill_date,
+    days_supply,
+    quantity,
+    ingredient_cost,
+    dispensing_fee,
+    member_copay,
+    plan_paid,
+    member_copay + plan_paid as allowed_amount,
+    gross_claim_cost,
+    pct_total_member_copay,
+    is_claim_paid,
+    loaded_at
+from {{ ref('int_claims_enriched') }}
