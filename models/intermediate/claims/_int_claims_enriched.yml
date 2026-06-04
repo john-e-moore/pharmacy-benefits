@@ -1,0 +1,87 @@
+version: 2
+
+models:
+  - name: int_claims_enriched
+    description: >
+      Intermediate model that deduplicates claims to their most recent record and
+      adds derived enrichment fields such as gross_claim_cost, pct_total_member_copay,
+      and is_claim_paid.
+    columns:
+      - name: claim_id
+        description: Unique identifier for each claim.
+        data_tests:
+          - unique
+          - not_null
+      - name: member_id
+        description: Foreign key referencing the member associated with the claim.
+        data_tests:
+          - not_null
+      - name: drug_id
+        description: Foreign key referencing the prescribed drug.
+        data_tests:
+          - not_null
+      - name: pharmacy_id
+        description: Foreign key referencing the dispensing pharmacy.
+        data_tests:
+          - not_null
+      - name: plan_id
+        description: Foreign key referencing the member's insurance plan.
+        data_tests:
+          - not_null
+      - name: ndc_code
+        description: National Drug Code (NDC) representing the dispensed medication.
+        data_tests:
+          - not_null
+      - name: claim_status
+        description: Status of the claim (e.g., paid, rejected, reversed).
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['paid', 'rejected', 'reversed']
+      - name: fill_date
+        description: Date the prescription was filled.
+        data_tests:
+          - not_null
+      - name: days_supply
+        description: Number of days the dispensed quantity is expected to last.
+        data_tests:
+          - not_null
+      - name: quantity
+        description: Number of units dispensed for the claim.
+        data_tests:
+          - not_null
+      - name: ingredient_cost
+        description: Cost of the drug ingredient for the claim.
+        data_tests:
+          - not_null
+      - name: dispensing_fee
+        description: Fee charged by the pharmacy for dispensing the medication.
+        data_tests:
+          - not_null
+      - name: member_copay
+        description: Amount paid by the member as their copay.
+        data_tests:
+          - not_null
+      - name: plan_paid
+        description: Amount paid by the insurance plan for the claim.
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: Timestamp when the claim record was loaded into the system.
+        data_tests:
+          - not_null
+      - name: gross_claim_cost
+        description: Sum of ingredient_cost and dispensing_fee for the claim.
+        data_tests:
+          - not_null
+      - name: pct_total_member_copay
+        description: >
+          Proportion of the total cost paid by the member, null if plan_paid is not positive.
+      - name: is_claim_paid
+        description: 1 if the claim status is 'paid', else 0.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 0]

@@ -204,13 +204,13 @@ Start with `stg_claims.sql` because you currently have claims data.
 
 For each staging model:
 
-- [ ] Pull from `source()` only
-- [ ] Rename columns into consistent snake_case
-- [ ] Cast dates/timestamps explicitly
-- [ ] Standardize status values
-- [ ] Avoid business aggregation logic
-- [ ] Add a primary key-like field
-- [ ] Add `loaded_at`
+- [x] Pull from `source()` only
+- [x] Rename columns into consistent snake_case
+- [x] Cast dates/timestamps explicitly
+- [x] Standardize status values
+- [x] Avoid business aggregation logic
+- [x] Add a primary key-like field
+- [x] Add `loaded_at`
 
 Example logic to practice manually:
 
@@ -235,10 +235,10 @@ from {{ source('claims_raw', 'raw_claims') }}
 
 ### Tests to Add
 
-- [ ] `not_null` on `claim_id`
-- [ ] `unique` on `claim_id`
-- [ ] `accepted_values` on `claim_status`
-- [ ] `not_null` on `loaded_at`
+- [x] `not_null` on `claim_id`
+- [x] `unique` on `claim_id`
+- [x] `accepted_values` on `claim_status`
+- [x] `not_null` on `loaded_at`
 - [ ] relationship tests later once dimension tables exist
 
 ### Interview Talking Point
@@ -307,26 +307,26 @@ models/intermediate/int_claims_by_member_day.sql
 
 ### Practice Logic
 
-- [ ] Compute total claim cost:
+- [x] Compute total claim cost:
 
 ```sql
 ingredient_cost + dispensing_fee as gross_claim_cost
 ```
 
-- [ ] Compute payer/member split:
+- [x] Compute payer/member split:
 
 ```sql
 plan_paid + member_copay as allowed_amount
 ```
 
-- [ ] Add claim status flags:
+- [x] Add claim status flags:
 
 ```sql
 case when claim_status = 'paid' then 1 else 0 end as is_paid_claim
 ```
 
 - [ ] Join to member, plan, pharmacy, and drug tables once available
-- [ ] Deduplicate if needed using `row_number()`
+- [x] Deduplicate if needed using `row_number()`
 
 ### Interview Talking Point
 

@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: stg_members
+    description: >
+      Staging layer for enrolled members. Trims whitespace and nullifies empty
+      strings on varchar fields; casts member_id, plan_id, eligibility dates,
+      and loaded_at.
+    columns:
+      - name: member_id
+        description: Unique identifier for each enrolled member.
+        data_tests:
+          - unique
+          - not_null
+      - name: plan_id
+        description: Foreign key referencing the member's pharmacy benefit plan.
+        data_tests:
+          - not_null
+      - name: member_status
+        description: Enrollment status of the member (e.g., active or terminated).
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['active', 'terminated', 'suspended']
+      - name: state
+        description: Two-letter state code for the member's primary residence.
+        data_tests:
+          - not_null
+      - name: eligibility_start_date
+        description: Date pharmacy benefit eligibility begins for the member.
+        data_tests:
+          - not_null
+      - name: eligibility_end_date
+        description: Date pharmacy benefit eligibility ends; null or future-dated for active members.
+      - name: loaded_at
+        description: Timestamp when the member record was loaded into the raw layer.
+        data_tests:
+          - not_null

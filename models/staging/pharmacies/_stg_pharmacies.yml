@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: stg_pharmacies
+    description: >
+      Staging layer for dispensing pharmacies. Trims whitespace and nullifies
+      empty strings on varchar fields; casts pharmacy_id and loaded_at.
+    columns:
+      - name: pharmacy_id
+        description: Unique identifier for each dispensing pharmacy.
+        data_tests:
+          - unique
+          - not_null
+      - name: pharmacy_name
+        description: Legal or trade name of the pharmacy location.
+        data_tests:
+          - not_null
+      - name: ncpdp_id
+        description: National Council for Prescription Drug Programs (NCPDP) provider identifier.
+        data_tests:
+          - unique
+          - not_null
+      - name: state
+        description: Two-letter state code where the pharmacy is located.
+        data_tests:
+          - not_null
+      - name: network_status
+        description: Indicates whether the pharmacy participates in the plan network.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['in_network', 'out_of_network']
+      - name: loaded_at
+        description: Timestamp when the pharmacy record was loaded into the raw layer.
+        data_tests:
+          - not_null
