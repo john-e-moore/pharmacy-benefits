@@ -52,7 +52,10 @@ try:
         eligibility_end = datetime.fromisoformat(str(member["eligibility_end_date"])).date()
         recent_window_start = max(eligibility_start, (now - timedelta(days=30)).date())
         fill_window_days = max((eligibility_end - recent_window_start).days, 0)
-        fill_date = recent_window_start + timedelta(days=randint(0, fill_window_days))
+        fill_date = min(
+            recent_window_start + timedelta(days=randint(0, fill_window_days)),
+            now.date(),
+        )
 
         ingredient_cost = round(uniform(10, 500), 2)
         dispensing_fee = round(uniform(1, 15), 2)
