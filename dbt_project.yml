@@ -26,3 +26,7 @@ models:
     marts:
       +schema: marts
       +materialized: table
+
+seeds:
+  pharmacy_benefits:
+    +schema: staging
