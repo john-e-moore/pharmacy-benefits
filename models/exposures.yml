@@ -1,0 +1,16 @@
+version: 2
+
+exposures:
+  - name: claims_dashboard
+    label: Claims Dashboard
+    type: dashboard
+    maturity: high
+    url: https://exampleurl.com
+    description: Dashboard used to monitor pharmacy claims volume and paid amounts.
+    depends_on:
+      - ref('fct_claims')
+      - ref('dim_members')
+      - ref('dim_drugs')
+    owner:
+      name: Analytics Team
+      email: analytics@exampleurl.com
