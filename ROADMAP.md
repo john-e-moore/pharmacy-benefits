@@ -105,7 +105,7 @@ select count(*)
 from PHARMACY_BENEFITS_RAW.CLAIMS.RAW_CLAIMS;
 ```
 
-- [ ] Run:
+- [x] Run:
 
 ```bash
 dbt debug --target dev
@@ -113,7 +113,7 @@ dbt debug --target prod
 dbt parse
 ```
 
-- [ ] Create one smoke-test model manually:
+- [x] Create one smoke-test model manually:
 
 ```sql
 -- models/smoke_test.sql
@@ -122,14 +122,14 @@ select
     current_timestamp as loaded_at
 ```
 
-- [ ] Run:
+- [x] Run:
 
 ```bash
 dbt run --select smoke_test --target dev
 dbt run --select smoke_test --target prod
 ```
 
-- [ ] Drop the smoke-test model after verifying it appears in Snowflake.
+- [x] Drop the smoke-test model after verifying it appears in Snowflake.
 
 ### Interview Talking Point
 
@@ -145,15 +145,15 @@ Teach dbt where raw data lives and how fresh it should be.
 
 ### Tasks
 
-- [ ] Create a source YAML file:
+- [x] Create a source YAML file:
 
 ```text
 models/staging/claims/_src_claims.yml
 ```
 
-- [ ] Define source for `PHARMACY_BENEFITS_RAW.CLAIMS.RAW_CLAIMS`
-- [ ] Add `loaded_at_field: loaded_at`
-- [ ] Add freshness thresholds:
+- [x] Define source for `PHARMACY_BENEFITS_RAW.CLAIMS.RAW_CLAIMS`
+- [x] Add `loaded_at_field: loaded_at`
+- [x] Add freshness thresholds:
 
 ```yaml
 warn_after:
@@ -164,13 +164,13 @@ error_after:
   period: hour
 ```
 
-- [ ] Run:
+- [x] Run:
 
 ```bash
 dbt source freshness --target dev
 ```
 
-- [ ] Intentionally wait or change freshness thresholds to observe pass/warn/error behavior.
+- [x] Intentionally wait or change freshness thresholds to observe pass/warn/error behavior.
 
 ### Manual Practice Rule
 
