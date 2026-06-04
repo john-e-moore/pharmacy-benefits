@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: stg_drugs
+    description: >
+      Staging layer for formulary drug reference data. Trims whitespace and
+      nullifies empty strings on varchar fields; casts drug_id and loaded_at.
+    columns:
+      - name: drug_id
+        description: Unique identifier for each drug in the formulary reference.
+        data_tests:
+          - unique
+          - not_null
+      - name: ndc_code
+        description: National Drug Code (NDC) identifying the medication product.
+        data_tests:
+          - unique
+          - not_null
+      - name: drug_name
+        description: Display name of the drug product.
+        data_tests:
+          - not_null
+      - name: therapeutic_class
+        description: Therapeutic classification used for formulary and utilization grouping.
+        data_tests:
+          - not_null
+      - name: brand_generic
+        description: Indicates whether the product is dispensed as brand or generic.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['brand', 'generic']
+      - name: loaded_at
+        description: Timestamp when the drug record was loaded into the raw layer.
+        data_tests:
+          - not_null

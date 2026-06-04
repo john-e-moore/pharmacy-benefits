@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: stg_plans
+    description: >
+      Staging layer for pharmacy benefit plans. Trims whitespace and nullifies
+      empty strings on varchar fields; casts plan_id and loaded_at.
+    columns:
+      - name: plan_id
+        description: Unique identifier for each pharmacy benefit plan.
+        data_tests:
+          - unique
+          - not_null
+      - name: plan_name
+        description: Human-readable name of the benefit plan.
+        data_tests:
+          - not_null
+      - name: plan_type
+        description: Line of business or funding type for the plan (e.g., commercial, Medicare).
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['commercial', 'medicare', 'medicaid', 'hmo', 'ppo']
+      - name: loaded_at
+        description: Timestamp when the plan record was loaded into the raw layer.
+        data_tests:
+          - not_null

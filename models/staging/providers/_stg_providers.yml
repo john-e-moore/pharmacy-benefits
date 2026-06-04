@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_providers
+    description: >
+      Staging layer for prescribing providers. Trims whitespace and nullifies
+      empty strings on varchar fields; casts provider_id and loaded_at.
+    columns:
+      - name: provider_id
+        description: Unique identifier for each prescribing provider.
+        data_tests:
+          - unique
+          - not_null
+      - name: npi
+        description: National Provider Identifier (NPI) for the prescriber.
+        data_tests:
+          - unique
+          - not_null
+      - name: provider_last_name
+        description: Last name of the prescribing provider.
+        data_tests:
+          - not_null
+      - name: specialty
+        description: Clinical specialty of the prescribing provider.
+        data_tests:
+          - not_null
+      - name: state
+        description: Two-letter state code where the provider practices.
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: Timestamp when the provider record was loaded into the raw layer.
+        data_tests:
+          - not_null
