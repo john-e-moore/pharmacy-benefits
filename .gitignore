@@ -10,6 +10,7 @@ data/
 *.log
 *.pyc
 *__pycache__*
+scripts/synthetic/__pycache__/
 
 # secrets
 .env
