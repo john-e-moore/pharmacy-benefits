@@ -34,7 +34,7 @@ sources:
               - not_null
               - accepted_values:
                   arguments:
-                    values: ['commercial', 'medicare', 'medicaid']
+                    values: ['commercial', 'medicare', 'medicaid', 'hmo', 'ppo']
           - name: loaded_at
             data_type: timestamp_tz
             description: Timestamp when the plan record was loaded into the raw layer.

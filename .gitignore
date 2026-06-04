@@ -8,6 +8,8 @@ target/
 logs/
 data/
 *.log
+*.pyc
+*__pycache__*
 
 # secrets
 .env
