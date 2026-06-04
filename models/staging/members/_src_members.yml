@@ -1,0 +1,55 @@
+version: 2
+
+sources:
+  - name: members
+    database: pharmacy_benefits_raw
+    schema: members
+    tables:
+      - name: raw_members
+        config:
+          freshness:
+            warn_after:
+              count: 3
+              period: hour
+            error_after:
+              count: 7
+              period: hour
+          loaded_at_field: loaded_at
+        columns:
+          - name: member_id
+            data_type: number
+            description: Unique identifier for each enrolled member.
+            data_tests:
+              - unique
+              - not_null
+          - name: plan_id
+            data_type: number
+            description: Foreign key referencing the member's pharmacy benefit plan.
+            data_tests:
+              - not_null
+          - name: member_status
+            data_type: varchar
+            description: Enrollment status of the member (e.g., active or terminated).
+            data_tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['active', 'terminated', 'suspended']
+          - name: state
+            data_type: varchar
+            description: Two-letter state code for the member's primary residence.
+            data_tests:
+              - not_null
+          - name: eligibility_start_date
+            data_type: date
+            description: Date pharmacy benefit eligibility begins for the member.
+            data_tests:
+              - not_null
+          - name: eligibility_end_date
+            data_type: date
+            description: Date pharmacy benefit eligibility ends; null or future-dated for active members.
+          - name: loaded_at
+            data_type: timestamp_tz
+            description: Timestamp when the member record was loaded into the raw layer.
+            data_tests:
+              - not_null

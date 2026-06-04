@@ -1,0 +1,42 @@
+version: 2
+
+sources:
+  - name: plans
+    database: pharmacy_benefits_raw
+    schema: plans
+    tables:
+      - name: raw_plans
+        config:
+          freshness:
+            warn_after:
+              count: 3
+              period: hour
+            error_after:
+              count: 7
+              period: hour
+          loaded_at_field: loaded_at
+        columns:
+          - name: plan_id
+            data_type: number
+            description: Unique identifier for each pharmacy benefit plan.
+            data_tests:
+              - unique
+              - not_null
+          - name: plan_name
+            data_type: varchar
+            description: Human-readable name of the benefit plan.
+            data_tests:
+              - not_null
+          - name: plan_type
+            data_type: varchar
+            description: Line of business or funding type for the plan (e.g., commercial, Medicare).
+            data_tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['commercial', 'medicare', 'medicaid']
+          - name: loaded_at
+            data_type: timestamp_tz
+            description: Timestamp when the plan record was loaded into the raw layer.
+            data_tests:
+              - not_null

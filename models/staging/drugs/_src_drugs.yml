@@ -1,0 +1,53 @@
+version: 2
+
+sources:
+  - name: drugs
+    database: pharmacy_benefits_raw
+    schema: drugs
+    tables:
+      - name: raw_drugs
+        config:
+          freshness:
+            warn_after:
+              count: 3
+              period: hour
+            error_after:
+              count: 7
+              period: hour
+          loaded_at_field: loaded_at
+        columns:
+          - name: drug_id
+            data_type: number
+            description: Unique identifier for each drug in the formulary reference.
+            data_tests:
+              - unique
+              - not_null
+          - name: ndc_code
+            data_type: varchar
+            description: National Drug Code (NDC) identifying the medication product.
+            data_tests:
+              - unique
+              - not_null
+          - name: drug_name
+            data_type: varchar
+            description: Display name of the drug product.
+            data_tests:
+              - not_null
+          - name: therapeutic_class
+            data_type: varchar
+            description: Therapeutic classification used for formulary and utilization grouping.
+            data_tests:
+              - not_null
+          - name: brand_generic
+            data_type: varchar
+            description: Indicates whether the product is dispensed as brand or generic.
+            data_tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['brand', 'generic']
+          - name: loaded_at
+            data_type: timestamp_tz
+            description: Timestamp when the drug record was loaded into the raw layer.
+            data_tests:
+              - not_null
