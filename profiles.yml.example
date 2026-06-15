@@ -11,3 +11,13 @@ pharmacy_benefits:
       database: PHARMACY_BENEFITS_DEV
       schema: DBT_YOURNAME
       threads: 4
+    prod:
+      type: snowflake
+      account: YOUR_ACCOUNT_IDENTIFIER
+      user: YOUR_USERNAME
+      password: YOUR_PASSWORD
+      role: DBT_PROD_ROLE
+      warehouse: DBT_PROD_WH
+      database: PHARMACY_BENEFITS_PROD
+      schema: STAGING
+      threads: 4

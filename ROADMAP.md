@@ -389,31 +389,31 @@ Show that you know how to build trust into pipelines.
 
 ### dbt Generic Tests
 
-- [ ] `not_null`
-- [ ] `unique`
-- [ ] `accepted_values`
-- [ ] `relationships`
+- [x] `not_null`
+- [x] `unique`
+- [x] `accepted_values`
+- [x] `relationships`
 
 ### Custom Data Tests
 
 Create custom SQL tests for rules like:
 
-- [ ] `plan_paid >= 0`
-- [ ] `member_copay >= 0`
-- [ ] `ingredient_cost >= 0`
-- [ ] paid claims should have positive allowed amount
-- [ ] rejected claims should not have plan paid, if that matches your business rule
-- [ ] `fill_date <= current_date`
-- [ ] `days_supply in (30, 60, 90)`
+- [x] `plan_paid >= 0`
+- [x] `member_copay >= 0`
+- [x] `ingredient_cost >= 0`
+- [x] paid claims should have positive allowed amount
+- [x] rejected claims should not have plan paid, if that matches your business rule
+- [x] `fill_date <= current_date`
+- [x] `days_supply in (30, 60, 90)`
 
 ### Observability Concepts to Practice
 
-- [ ] Freshness: did source data arrive?
-- [ ] Volume: did row counts unexpectedly spike/drop?
-- [ ] Schema drift: did columns change?
-- [ ] Validity: are values within expected ranges?
-- [ ] Uniqueness: are keys duplicated?
-- [ ] Referential integrity: do foreign keys match dimensions?
+- [x] Freshness: did source data arrive?
+- [x] Volume: did row counts unexpectedly spike/drop?
+- [x] Schema drift: did columns change?
+- [x] Validity: are values within expected ranges?
+- [x] Uniqueness: are keys duplicated?
+- [x] Referential integrity: do foreign keys match dimensions?
 
 ### Add Simple Audit Models
 
@@ -436,19 +436,19 @@ Generate documentation and explain lineage clearly.
 
 ### Tasks
 
-- [ ] Add model descriptions
-- [ ] Add column descriptions
-- [ ] Add source descriptions
-- [ ] Add tests in YAML
-- [ ] Run:
+- [x] Add model descriptions
+- [x] Add column descriptions
+- [x] Add source descriptions
+- [x] Add tests in YAML
+- [x] Run:
 
 ```bash
-dbt docs generate
-dbt docs serve
+dbt compile --write-index --write-catalog # new with dbt fusion; used to be dbt docs generate
+dbt docs serve --no-open --host 0.0.0.0 --port 8580 # necessary for WSL2
 ```
 
-- [ ] Inspect lineage graph
-- [ ] Be able to trace:
+- [x] Inspect lineage graph
+- [x] Be able to trace:
 
 ```text
 RAW_CLAIMS -> stg_claims -> int_claims_enriched -> fct_claims -> claims_cost_summary
@@ -468,27 +468,27 @@ Practice the workflow a real team would use.
 
 ### Branch Workflow
 
-- [ ] Create a feature branch:
+- [x] Create a feature branch:
 
 ```bash
 git checkout -b feature/staging-claims
 ```
 
-- [ ] Add source YAML and staging model
-- [ ] Run locally:
+- [x] Add source YAML and staging model
+- [x] Run locally:
 
 ```bash
 dbt build --target dev --select stg_claims+
 ```
 
-- [ ] Commit changes:
+- [x] Commit changes:
 
 ```bash
 git add .
 git commit -m "Add claims source and staging model"
 ```
 
-- [ ] Merge to main after tests pass
+- [x] Merge to main after tests pass
 
 ### Deployment Simulation
 

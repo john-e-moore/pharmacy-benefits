@@ -8,9 +8,9 @@ target/
 logs/
 data/
 *.log
-*.pyc
-*__pycache__*
-scripts/synthetic/__pycache__/
+__pycache__/
+*.py[cod]
+*$py.class
 .cursor/
 
 # secrets
